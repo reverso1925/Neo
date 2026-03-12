@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo Minecraft Server | Survival, Skyblock | play.neo.gg</title>
+    <meta name="description" content="Neo é o servidor de Minecraft mais inovador do Brasil. Survival, Skyblock, Minigames, PvP e mais. Jogue agora em play.neo.gg! Versão 1.21+">
+    <meta name="keywords" content="minecraft server, servidor minecraft, neo minecraft, survival, skyblock, pvp, minigames, servidor brasileiro">
+    <meta name="author" content="NeoProton AG">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Neo Minecraft Server | O Melhor Servidor do Brasil">
+    <meta property="og:description" content="Survival, Skyblock, Minigames e mais. IP: play.neo.gg | Versão 1.21+">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://neo.gg">
+    <meta property="og:image" content="https://neo.gg/assets/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Neo Minecraft Server">
+    <meta name="twitter:description" content="O servidor de Minecraft mais inovador do Brasil.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><text x='4' y='24' font-size='24' fill='%2300FFFF' font-family='monospace' font-weight='bold'>N</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'neo-black': '#000000',
+                        'neo-dark': '#0a0a1a',
+                        'neo-darker': '#050510',
+                        'neo-cyan': '#00FFFF',
+                        'neo-magenta': '#FF00FF',
+                        'neo-lime': '#00FF00',
+                        'neo-purple': '#8B00FF',
+                        'neo-blue': '#0040FF',
+                        'neo-card': '#0d0d2b',
+                        'neo-card-light': '#1a1a3e',
+                    },
+                    fontFamily: {
+                        pixel: ['"Press Start 2P"', 'cursive'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delay': 'float 6s ease-in-out 2s infinite',
+                        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+                        'slide-up': 'slide-up 0.6s ease-out',
+                        'slide-down': 'slide-down 0.3s ease-out',
+                        'fade-in': 'fade-in 0.8s ease-out',
+                        'bounce-in': 'bounce-in 0.5s ease-out',
+                        'pixel-build': 'pixel-build 0.1s steps(1) forwards',
+                        'scan-line': 'scan-line 4s linear infinite',
+                        'neon-flicker': 'neon-flicker 3s infinite',
+                        'rotate-slow': 'rotate-slow 20s linear infinite',
+                        'progress-bar': 'progress-bar 2s ease-out forwards',
+                        'typing': 'typing 3s steps(40) 1s forwards',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-neo-darker text-white font-sans overflow-x-hidden">
+
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 z-[9999] bg-neo-black flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="text-center">
+            <p class="font-pixel text-neo-cyan text-xs mb-6 tracking-wider">CARREGANDO NEO...</p>
+            <div class="crafting-loader">
+                <div class="crafting-bar"></div>
+            </div>
+            <div class="mt-4 flex gap-1 justify-center">
+                <div class="w-3 h-3 bg-neo-cyan pixel-block animate-bounce" style="animation-delay: 0s"></div>
+                <div class="w-3 h-3 bg-neo-magenta pixel-block animate-bounce" style="animation-delay: 0.1s"></div>
+                <div class="w-3 h-3 bg-neo-lime pixel-block animate-bounce" style="animation-delay: 0.2s"></div>
+                <div class="w-3 h-3 bg-neo-cyan pixel-block animate-bounce" style="animation-delay: 0.3s"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particles-canvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+
+    <!-- Scan Line Effect -->
+    <div class="scan-line-overlay fixed inset-0 z-[1] pointer-events-none"></div>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="nav-bg backdrop-blur-xl bg-neo-black/70 border-b border-neo-cyan/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16 lg:h-20">
+                    <!-- Logo -->
+                    <a href="#hero" class="flex items-center gap-3 group">
+                        <div class="neo-logo relative">
+                            <svg width="40" height="40" viewBox="0 0 40 40" class="transition-transform group-hover:scale-110">
+                                <rect x="2" y="2" width="36" height="36" fill="none" stroke="#00FFFF" stroke-width="2" class="neo-logo-border"/>
+                                <rect x="6" y="6" width="8" height="28" fill="#00FFFF"/>
+                                <rect x="14" y="6" width="4" height="4" fill="#00FFFF"/>
+                                <rect x="18" y="10" width="4" height="4" fill="#00FFFF"/>
+                                <rect x="22" y="14" width="4" height="4" fill="#00FFFF"/>
+                                <rect x="26" y="6" width="8" height="28" fill="#00FFFF"/>
+                            </svg>
+                        </div>
+                        <span class="font-pixel text-neo-cyan text-lg tracking-widest neo-text-glow">NEO</span>
+                    </a>
+
+                    <!-- Desktop Nav -->
+                    <div class="hidden lg:flex items-center gap-1">
+                        <a href="#hero" class="nav-link">Início</a>
+                        <a href="#about" class="nav-link">Sobre</a>
+                        <a href="#gamemodes" class="nav-link">Gamemodes</a>
+                        <a href="#store" class="nav-link">Loja</a>
+                        <a href="#vote" class="nav-link">Votar</a>
+                        <a href="#team" class="nav-link">Equipe</a>
+                        <a href="#gallery" class="nav-link">Galeria</a>
+                        <a href="#support" class="nav-link">Suporte</a>
+                    </div>
+
+                    <!-- Right Actions -->
+                    <div class="flex items-center gap-3">
+                        <!-- Player Counter -->
+                        <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-neo-lime/10 border border-neo-lime/30 rounded-lg">
+                            <div class="w-2 h-2 bg-neo-lime rounded-full animate-pulse"></div>
+                            <span id="player-count" class="font-pixel text-neo-lime text-[10px]">...</span>
+                        </div>
+
+                        <!-- Dark Mode Toggle -->
+                        <button id="theme-toggle" class="p-2 rounded-lg hover:bg-white/5 transition-colors group" title="Alternar tema">
+                            <svg class="torch-icon w-6 h-6" viewBox="0 0 24 24" fill="none">
+                                <rect x="11" y="8" width="2" height="12" fill="#8B4513"/>
+                                <rect x="10" y="4" width="4" height="5" fill="#FF6600"/>
+                                <rect x="9" y="3" width="6" height="2" fill="#FFAA00" class="group-hover:fill-neo-cyan transition-colors"/>
+                                <rect x="10" y="2" width="4" height="2" fill="#FFFF00" class="torch-flame"/>
+                            </svg>
+                        </button>
+
+                        <!-- Mobile Hamburger -->
+                        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-white/5 transition-colors">
+                            <div class="hamburger-icon">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="lg:hidden hidden">
+            <div class="bg-neo-black/95 backdrop-blur-xl border-b border-neo-cyan/10 px-4 py-6 space-y-2">
+                <a href="#hero" class="mobile-nav-link">🏠 Início</a>
+                <a href="#about" class="mobile-nav-link">📋 Sobre</a>
+                <a href="#gamemodes" class="mobile-nav-link">🎮 Gamemodes</a>
+                <a href="#store" class="mobile-nav-link">🛒 Loja</a>
+                <a href="#vote" class="mobile-nav-link">⭐ Votar</a>
+                <a href="#team" class="mobile-nav-link">👥 Equipe</a>
+                <a href="#gallery" class="mobile-nav-link">📸 Galeria</a>
+                <a href="#support" class="mobile-nav-link">💬 Suporte</a>
+                <div class="pt-4 border-t border-neo-cyan/10">
+                    <div class="flex items-center gap-2 px-4 py-2">
+                        <div class="w-2 h-2 bg-neo-lime rounded-full animate-pulse"></div>
+                        <span id="player-count-mobile" class="font-pixel text-neo-lime text-[10px]">...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Canvas Animation -->
+        <canvas id="hero-bg-canvas" class="absolute inset-0 z-0"></canvas>
+
+        <!-- Gradient Overlays -->
+        <div class="absolute inset-0 bg-gradient-to-b from-neo-black via-transparent to-neo-darker z-[1]"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-neo-cyan/5 via-transparent to-neo-magenta/5 z-[1]"></div>
+
+        <!-- Floating Blocks -->
+        <div class="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
+            <div class="floating-block block-grass" style="left: 10%; top: 20%;"></div>
+            <div class="floating-block block-obsidian" style="left: 80%; top: 30%;"></div>
+            <div class="floating-block block-diamond" style="left: 15%; top: 70%;"></div>
+            <div class="floating-block block-netherrack" style="left: 85%; top: 65%;"></div>
+            <div class="floating-block block-emerald" style="left: 50%; top: 15%;"></div>
+            <div class="floating-block block-gold" style="left: 70%; top: 80%;"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <!-- NEO Title with Build Animation -->
+            <div class="mb-6" aria-label="NEO">
+                <h1 id="neo-title" class="neo-title font-pixel text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-wider">
+                    <span class="neo-letter" data-delay="0">N</span>
+                    <span class="neo-letter" data-delay="1">E</span>
+                    <span class="neo-letter" data-delay="2">O</span>
+                </h1>
+                <div class="neo-title-underline mt-4"></div>
+            </div>
+
+            <!-- Subtitle with typing effect -->
+            <div class="mb-8 space-y-3">
+                <p id="hero-subtitle" class="text-lg sm:text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
+                    O servidor de Minecraft mais <span class="text-neo-cyan font-semibold">inovador</span> do Brasil
+                </p>
+                <div class="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-400">
+                    <span class="px-3 py-1 bg-neo-cyan/10 border border-neo-cyan/20 rounded-full font-pixel text-[10px] text-neo-cyan">SURVIVAL</span>
+                    <span class="px-3 py-1 bg-neo-magenta/10 border border-neo-magenta/20 rounded-full font-pixel text-[10px] text-neo-magenta">SKYBLOCK</span>
+                    <span class="px-3 py-1 bg-neo-lime/10 border border-neo-lime/20 rounded-full font-pixel text-[10px] text-neo-lime">MINIGAMES</span>
+                    <span class="px-3 py-1 bg-neo-purple/10 border border-neo-purple/20 rounded-full font-pixel text-[10px] text-neo-purple">PVP</span>
+                </div>
+            </div>
+
+            <!-- Server IP -->
+            <div class="mb-8">
+                <button onclick="copyIP()" id="ip-copy-btn" class="group inline-flex items-center gap-3 px-6 py-3 bg-neo-card border-2 border-neo-cyan/30 rounded-xl hover:border-neo-cyan/60 transition-all duration-300 cursor-pointer">
+                    <svg class="w-5 h-5 text-neo-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                    </svg>
+                    <span class="font-pixel text-sm sm:text-base text-neo-cyan tracking-wider">play.neo.gg</span>
+                    <span class="text-xs text-gray-500 group-hover:text-neo-cyan transition-colors" id="copy-feedback">Clique para copiar</span>
+                </button>
+                <p class="mt-2 text-xs text-gray-500 font-pixel">Versão 1.21+ | Java & Bedrock</p>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="minecraft://play.neo.gg" class="neo-btn-primary group">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h4v4H7V7zm6 0h4v4h-4V7zm-6 6h4v4H7v-4zm6 0h4v4h-4v-4z"/>
+                    </svg>
+                    <span>Entrar no Servidor</span>
+                    <div class="btn-shine"></div>
+                </a>
+                <a href="https://discord.gg/neo" target="_blank" rel="noopener" class="neo-btn-secondary group">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/>
+                    </svg>
+                    <span>Discord</span>
+                </a>
+                <a href="#vote" class="neo-btn-tertiary group">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span>Vote Agora</span>
+                </a>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+                <div class="w-6 h-10 border-2 border-neo-cyan/30 rounded-full flex items-start justify-center p-1.5">
+                    <div class="w-1.5 h-3 bg-neo-cyan rounded-full animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT SECTION ==================== -->
+    <section id="about" class="relative py-20 lg:py-32 z-10">
+        <div class="section-divider-top"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 reveal-on-scroll">
+                <span class="font-pixel text-neo-cyan text-xs tracking-[0.3em] uppercase">Sobre nós</span>
+                <h2 class="font-pixel text-2xl sm:text-3xl lg:text-4xl mt-4 neo-text-glow">CONHEÇA O NEO</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-neo-cyan to-neo-magenta mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left - Description -->
+                <div class="reveal-on-scroll space-y-6">
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        <span class="text-neo-cyan font-bold">Neo</span> é um servidor 100% brasileiro com economia 
+                        <span class="text-neo-lime">player-driven</span>, eventos semanais, ranks custom e anti-cheat 
+                        avançado. Online <span class="text-neo-magenta">24/7</span> com 99.9% uptime.
+                    </p>
+                    <p class="text-gray-400 leading-relaxed">
+                        Fundado em 2024, o Neo rapidamente se tornou referência em servidores brasileiros de Minecraft. 
+                        Nossa infraestrutura de última geração garante a melhor experiência para jogadores de todo o país, 
+                        com servidores dedicados, proteção DDoS e latência ultra-baixa.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="feature-tag">⚡ Anti-Cheat Avançado</span>
+                        <span class="feature-tag">🌍 Infraestrutura BR</span>
+                        <span class="feature-tag">🛡️ Proteção DDoS</span>
+                        <span class="feature-tag">💰 Economia Balanceada</span>
+                        <span class="feature-tag">🎉 Eventos Semanais</span>
+                        <span class="feature-tag">🏆 Ranks Custom</span>
+                    </div>
+                </div>
+
+                <!-- Right - Screenshot/Image -->
+                <div class="reveal-on-scroll">
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-neo-cyan via-neo-magenta to-neo-lime rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                        <div class="relative aspect-video bg-neo-card rounded-2xl border border-neo-cyan/20 overflow-hidden">
+                            <!-- Placeholder spawn image -->
+                            <div class="spawn-preview w-full h-full">
+                                <canvas id="spawn-canvas" class="w-full h-full"></canvas>
+                            </div>
+                            <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+                                <span class="font-pixel text-[10px] text-neo-cyan bg-neo-black/60 px-3 py-1.5 rounded-lg backdrop-blur-sm">📍 Spawn Principal</span>
+                                <span class="font-pixel text-[10px] text-neo-lime bg-neo-black/60 px-3 py-1.5 rounded-lg backdrop-blur-sm">🟢 ONLINE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-16">
+                <div class="stat-card reveal-on-scroll" data-delay="0">
+                    <div class="stat-icon bg-neo-cyan/10 text-neo-cyan">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    </div>
+                    <div class="stat-number font-pixel text-2xl sm:text-3xl text-neo-cyan" data-count="1247">0</div>
+                    <div class="stat-label">Jogadores Online</div>
+                </div>
+                <div class="stat-card reveal-on-scroll" data-delay="100">
+                    <div class="stat-icon bg-neo-magenta/10 text-neo-magenta">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <div class="stat-number font-pixel text-2xl sm:text-3xl text-neo-magenta" data-count="52840">0</div>
+                    <div class="stat-label">Total de Votos</div>
+                </div>
+                <div class="stat-card reveal-on-scroll" data-delay="200">
+                    <div class="stat-icon bg-neo-lime/10 text-neo-lime">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    </div>
+                    <div class="stat-number font-pixel text-2xl sm:text-3xl text-neo-lime" data-count="365">0</div>
+                    <div class="stat-label stat-suffix" data-suffix=" dias">Tempo Online</div>
+                </div>
+                <div class="stat-card reveal-on-scroll" data-delay="300">
+                    <div class="stat-icon bg-neo-purple/10 text-neo-purple">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    </div>
+                    <div class="stat-number font-pixel text-2xl sm:text-3xl text-neo-purple" data-count="4">0</div>
+                    <div class="stat-label">Gamemodes</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== GAMEMODES SECTION ==================== -->
+    <section id="gamemodes" class="relative py-20 lg:py-32 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 reveal-on-scroll">
+                <span class="font-pixel text-neo-magenta text-xs tracking-[0.3em] uppercase">Modos de Jogo</span>
+                <h2 class="font-pixel text-2xl sm:text-3xl lg:text-4xl mt-4">GAMEMODES</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-neo-magenta to-neo-cyan mx-auto mt-4"></div>
+                <p class="mt-4 text-gray-400 max-w-2xl mx-auto">Escolha seu modo favorito e mergulhe na experiência Neo</p>
+            </div>
+
+            <!-- Gamemode Cards -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Survival -->
+                <div class="flip-card reveal-on-scroll" data-delay="0">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-gradient-to-b from-neo-card to-neo-darker border border-neo-cyan/20">
+                            <div class="gamemode-icon survival-icon mb-6">
+                                <svg viewBox="0 0 64 64" class="w-16 h-16">
+                                    <rect x="0" y="0" width="64" height="32" fill="#4CAF50"/>
+                                    <rect x="0" y="32" width="64" height="32" fill="#795548"/>
+                                    <rect x="8" y="8" width="8" height="8" fill="#66BB6A"/>
+                                    <rect x="24" y="16" width="8" height="8" fill="#388E3C"/>
+                                    <rect x="48" y="8" width="8" height="8" fill="#81C784"/>
+                                    <rect x="16" y="40" width="8" height="8" fill="#6D4C41"/>
+                                    <rect x="40" y="48" width="8" height="8" fill="#8D6E63"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-pixel text-sm text-neo-cyan mb-2">SURVIVAL</h3>
+                            <p class="text-gray-400 text-sm">Mundo vanilla com twists custom</p>
+                            <div class="mt-4 flex items-center gap-2 text-xs text-neo-lime">
+                                <div class="w-2 h-2 bg-neo-lime rounded-full animate-pulse"></div>
+                                <span>432 jogando</span>
+                            </div>
+                        </div>
+                        <div class="flip-card-back bg-gradient-to-b from-neo-cyan/20 to-neo-card border border-neo-cyan/40">
+                            <h3 class="font-pixel text-sm text-neo-cyan mb-4">SURVIVAL</h3>
+                            <ul class="text-left text-sm text-gray-300 space-y-2 mb-6">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-cyan">▸</span> Mundo vanilla com twists custom
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-cyan">▸</span> Farms OP e bosses épicos
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-cyan">▸</span> Economia player-driven
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-cyan">▸</span> Claims e proteção de terreno
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-cyan">▸</span> Eventos semanais com prêmios
+                                </li>
+                            </ul>
+                            <a href="minecraft://play.neo.gg" class="inline-flex items-center gap-2 px-4 py-2 bg-neo-cyan text-neo-black font-pixel text-[10px] rounded-lg hover:bg-neo-cyan/80 transition-colors">
+                                <span>JOGAR AGORA</span> →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skyblock -->
+                <div class="flip-card reveal-on-scroll" data-delay="100">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-gradient-to-b from-neo-card to-neo-darker border border-neo-magenta/20">
+                            <div class="gamemode-icon skyblock-icon mb-6">
+                                <svg viewBox="0 0 64 64" class="w-16 h-16">
+                                    <rect x="8" y="32" width="48" height="8" fill="#4CAF50"/>
+                                    <rect x="8" y="40" width="48" height="16" fill="#795548"/>
+                                    <rect x="24" y="16" width="16" height="16" fill="#8D6E63"/>
+                                    <rect x="16" y="8" width="32" height="8" fill="#4CAF50"/>
+                                    <rect x="28" y="0" width="8" height="8" fill="#66BB6A"/>
+                                    <!-- Cloud -->
+                                    <rect x="0" y="12" width="12" height="4" fill="rgba(255,255,255,0.3)"/>
+                                    <rect x="52" y="20" width="12" height="4" fill="rgba(255,255,255,0.3)"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-pixel text-sm text-neo-magenta mb-2">SKYBLOCK</h3>
+                            <p class="text-gray-400 text-sm">Ilhas flutuantes infinitas</p>
+                            <div class="mt-4 flex items-center gap-2 text-xs text-neo-lime">
+                                <div class="w-2 h-2 bg-neo-lime rounded-full animate-pulse"></div>
+                                <span>318 jogando</span>
+                            </div>
+                        </div>
+                        <div class="flip-card-back bg-gradient-to-b from-neo-magenta/20 to-neo-card border border-neo-magenta/40">
+                            <h3 class="font-pixel text-sm text-neo-magenta mb-4">SKYBLOCK</h3>
+                            <ul class="text-left text-sm text-gray-300 space-y-2 mb-6">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-magenta">▸</span> Ilhas com progression infinita
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-magenta">▸</span> Economy balanceada
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-magenta">▸</span> Custom generators
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-magenta">▸</span> Ranking de ilhas
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-magenta">▸</span> Missões e desafios diários
+                                </li>
+                            </ul>
+                            <a href="minecraft://play.neo.gg" class="inline-flex items-center gap-2 px-4 py-2 bg-neo-magenta text-neo-black font-pixel text-[10px] rounded-lg hover:bg-neo-magenta/80 transition-colors">
+                                <span>JOGAR AGORA</span> →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minigames -->
+                <div class="flip-card reveal-on-scroll" data-delay="200">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-gradient-to-b from-neo-card to-neo-darker border border-neo-lime/20">
+                            <div class="gamemode-icon minigames-icon mb-6">
+                                <svg viewBox="0 0 64 64" class="w-16 h-16">
+                                    <rect x="8" y="16" width="48" height="32" fill="#333"/>
+                                    <rect x="12" y="20" width="40" height="24" fill="#1a1a2e"/>
+                                    <!-- Game elements -->
+                                    <rect x="16" y="24" width="8" height="8" fill="#F44336"/>
+                                    <rect x="28" y="28" width="8" height="8" fill="#2196F3"/>
+                                    <rect x="40" y="24" width="8" height="8" fill="#FFEB3B"/>
+                                    <rect x="20" y="36" width="4" height="4" fill="#4CAF50"/>
+                                    <rect x="36" y="36" width="4" height="4" fill="#FF9800"/>
+                                    <!-- Controller -->
+                                    <rect x="20" y="52" width="24" height="8" fill="#555"/>
+                                    <rect x="16" y="48" width="8" height="8" fill="#555"/>
+                                    <rect x="40" y="48" width="8" height="8" fill="#555"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-pixel text-sm text-neo-lime mb-2">MINIGAMES</h3>
+                            <p class="text-gray-400 text-sm">Bedwars, Skywars e mais</p>
+                            <div class="mt-4 flex items-center gap-2 text-xs text-neo-lime">
+                                <div class="w-2 h-2 bg-neo-lime rounded-full animate-pulse"></div>
+                                <span>289 jogando</span>
+                            </div>
+                        </div>
+                        <div class="flip-card-back bg-gradient-to-b from-neo-lime/20 to-neo-card border border-neo-lime/40">
+                            <h3 class="font-pixel text-sm text-neo-lime mb-4">MINIGAMES</h3>
+                            <ul class="text-left text-sm text-gray-300 space-y-2 mb-6">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-lime">▸</span> Bedwars ranked
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-lime">▸</span> Skywars solo & duo
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-lime">▸</span> TNT Run competitivo
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-lime">▸</span> Torneiões diários com prêmios
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-lime">▸</span> Sistema de ELO
+                                </li>
+                            </ul>
+                            <a href="minecraft://play.neo.gg" class="inline-flex items-center gap-2 px-4 py-2 bg-neo-lime text-neo-black font-pixel text-[10px] rounded-lg hover:bg-neo-lime/80 transition-colors">
+                                <span>JOGAR AGORA</span> →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NeoWars Custom -->
+                <div class="flip-card reveal-on-scroll" data-delay="300">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-gradient-to-b from-neo-card to-neo-darker border border-neo-purple/20 relative overflow-hidden">
+                            <div class="absolute top-2 right-2">
+                                <span class="font-pixel text-[8px] text-neo-black bg-neo-purple px-2 py-1 rounded">NOVO</span>
+                            </div>
+                            <div class="gamemode-icon neowars-icon mb-6">
+                                <svg viewBox="0 0 64 64" class="w-16 h-16">
+                                    <!-- Sword -->
+                                    <rect x="28" y="4" width="8" height="8" fill="#00FFFF"/>
+                                    <rect x="24" y="12" width="16" height="4" fill="#B0BEC5"/>
+                                    <rect x="28" y="16" width="8" height="24" fill="#78909C"/>
+                                    <rect x="20" y="40" width="24" height="4" fill="#795548"/>
+                                    <rect x="28" y="44" width="8" height="12" fill="#6D4C41"/>
+                                    <!-- Glow -->
+                                    <rect x="24" y="4" width="4" height="4" fill="rgba(0,255,255,0.3)"/>
+                                    <rect x="36" y="4" width="4" height="4" fill="rgba(0,255,255,0.3)"/>
+                                    <rect x="20" y="8" width="4" height="4" fill="rgba(255,0,255,0.3)"/>
+                                    <rect x="40" y="8" width="4" height="4" fill="rgba(255,0,255,0.3)"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-pixel text-sm text-neo-purple mb-2">NEOWARS</h3>
+                            <p class="text-gray-400 text-sm">PvP arena com armas neon</p>
+                            <div class="mt-4 flex items-center gap-2 text-xs text-neo-lime">
+                                <div class="w-2 h-2 bg-neo-lime rounded-full animate-pulse"></div>
+                                <span>208 jogando</span>
+                            </div>
+                        </div>
+                        <div class="flip-card-back bg-gradient-to-b from-neo-purple/20 to-neo-card border border-neo-purple/40">
+                            <h3 class="font-pixel text-sm text-neo-purple mb-4">NEOWARS</h3>
+                            <ul class="text-left text-sm text-gray-300 space-y-2 mb-6">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-purple">▸</span> Armas neon customizadas
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-purple">▸</span> Arena PvP competitiva
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-purple">▸</span> Habilidades especiais
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-purple">▸</span> Temporadas com rewards
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-neo-purple">▸</span> Exclusivo do Neo!
+                                </li>
+                            </ul>
+                            <a href="minecraft://play.neo.gg" class="inline-flex items-center gap-2 px-4 py-2 bg-neo-purple text-white font-pixel text-[10px] rounded-lg hover:bg-neo-purple/80 transition-colors">
+                                <span>JOGAR AGORA</span> →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== STORE SECTION ==================== -->
+    <section id="store" class="relative py-20 lg:py-32 z-10 bg-neo-black/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 reveal-on-scroll">
+                <span class="font-pixel text-neo-lime text-xs tracking-[0.3em] uppercase">Loja</span>
+                <h2 class="font-pixel text-2xl sm:text-3xl lg:text-4xl mt-4">NEO STORE</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-neo-lime to-neo-cyan mx-auto mt-4"></div>
+                <p class="mt-4 text-gray-400 max-w-2xl mx-auto">Potencialize sua experiência com itens exclusivos</p>
+            </div>
+
+            <!-- Store Categories -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12 reveal-on-scroll">
+                <button class="store-filter active" data-filter="all">Todos</button>
+                <button class="store-filter" data-filter="ranks">Ranks</button>
+                <button class="store-filter" data-filter="kits">Kits</button>
+                <button class="store-filter" data-filter="cosmetics">Cosméticos</button>
+                <button class="store-filter" data-filter="keys">Keys</button>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="store-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- VIP Rank -->
+                <div class="store-card reveal-on-scroll" data-category="ranks" data-delay="0">
+                    <div class="relative p-6 bg-neo-card rounded-2xl border border-neo-cyan/20 hover:border-neo-cyan/50 transition-all duration-300 group">
+                        <div class="absolute top-3 right-3">
+                            <span class="font-pixel text-[8px] text-neo-black bg-neo-cyan px-2 py-1 rounded">POPULAR</span>
+                        </div>
+                        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <svg viewBox="0 0 48 48" class="w-full h-full">
+                                <rect x="8" y="8" width="32" height="32" fill="#00FFFF" opacity="0.2"/>
+                                <text x="24" y="30" text-anchor="middle" fill="#00FFFF" font-family="'Press Start 2P'" font-size="14">V</text>
+                                <rect x="4" y="4" width="8" height="8" fill="#00FFFF"/>
+                                <rect x="36" y="4" width="8" height="8" fill="#00FFFF"/>
+                                <rect x="4" y="36" width="8" height="8" fill="#00FFFF"/>
+                                <rect x="36" y="36" width="8" height="8" fill="#00FFFF"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-pixel text-xs text-neo-cyan text-center mb-2">RANK VIP</h3>
+                        <p class="text-gray-400 text-xs text-center mb-4">Kit VIP, tag neon, fly em lobby, /hat e mais!</p>
+                        <div class="text-center mb-4">
+                            <span class="text-gray-500 text-sm line-through">R$ 39,90</span>
+                            <span class="font-pixel text-lg text-neo-cyan ml-2">R$ 24,90</span>
+                        </div>
+                        <button onclick="addToCart('VIP', 24.90)" class="w-full py-2.5 bg-neo-cyan/10 border border-neo-cyan/30 text-neo-cyan font-pixel text-[10px] rounded-lg hover:bg-neo-cyan/20 transition-all duration-300 add-to-cart-btn">
+                            🛒 ADICIONAR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MVP Rank -->
+                <div class="store-card reveal-on-scroll" data-category="ranks" data-delay="100">
+                    <div class="relative p-6 bg-neo-card rounded-2xl border border-neo-magenta/20 hover:border-neo-magenta/50 transition-all duration-300 group">
+                        <div class="absolute top-3 right-3">
+                            <span class="font-pixel text-[8px] text-neo-black bg-neo-magenta px-2 py-1 rounded">TOP</span>
+                        </div>
+                        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <svg viewBox="0 0 48 48" class="w-full h-full">
+                                <rect x="8" y="8" width="32" height="32" fill="#FF00FF" opacity="0.2"/>
+                                <text x="24" y="30" text-anchor="middle" fill="#FF00FF" font-family="'Press Start 2P'" font-size="10">MVP</text>
+                                <!-- Crown -->
+                                <rect x="12" y="0" width="4" height="8" fill="#FFD700"/>
+                                <rect x="22" y="0" width="4" height="8" fill="#FFD700"/>
+                                <rect x="32" y="0" width="4" height="8" fill="#FFD700"/>
+                                <rect x="12" y="8" width="24" height="4" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-pixel text-xs text-neo-magenta text-center mb-2">RANK MVP</h3>
+                        <p class="text-gray-400 text-xs text-center mb-4">Tudo do VIP + partículas, pet exclusivo, /nick</p>
+                        <div class="text-center mb-4">
+                            <span class="text-gray-500 text-sm line-through">R$ 79,90</span>
+                            <span class="font-pixel text-lg text-neo-magenta ml-2">R$ 49,90</span>
+                        </div>
+                        <button onclick="addToCart('MVP', 49.90)" class="w-full py-2.5 bg-neo-magenta/10 border border-neo-magenta/30 text-neo-magenta font-pixel text-[10px] rounded-lg hover:bg-neo-magenta/20 transition-all duration-300 add-to-cart-btn">
+                            🛒 ADICIONAR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kit Starter -->
+                <div class="store-card reveal-on-scroll" data-category="kits" data-delay="200">
+                    <div class="relative p-6 bg-neo-card rounded-2xl border border-neo-lime/20 hover:border-neo-lime/50 transition-all duration-300 group">
+                        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <svg viewBox="0 0 48 48" class="w-full h-full">
+                                <rect x="8" y="16" width="32" height="24" fill="#795548"/>
+                                <rect x="8" y="12" width="32" height="8" fill="#8D6E63"/>
+                                <rect x="20" y="16" width="8" height="4" fill="#FFD700"/>
+                                <rect x="12" y="20" width="8" height="8" fill="#B0BEC5"/>
+                                <rect x="28" y="20" width="8" height="8" fill="#4CAF50"/>
+                                <rect x="20" y="28" width="8" height="8" fill="#F44336"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-pixel text-xs text-neo-lime text-center mb-2">KIT STARTER</h3>
+                        <p class="text-gray-400 text-xs text-center mb-4">Armadura de ferro, ferramentas e comida</p>
+                        <div class="text-center mb-4">
+                            <span class="font-pixel text-lg text-neo-lime">R$ 9,90</span>
+                        </div>
+                        <button onclick="addToCart('Kit Starter', 9.90)" class="w-full py-2.5 bg-neo-lime/10 border border-neo-lime/30 text-neo-lime font-pixel text-[10px] rounded-lg hover:bg-neo-lime/20 transition-all duration-300 add-to-cart-btn">
+                            🛒 ADICIONAR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Partículas Neon -->
+                <div class="store-card reveal-on-scroll" data-category="cosmetics" data-delay="300">
+                    <div class="relative p-6 bg-neo-card rounded-2xl border border-neo-purple/20 hover:border-neo-purple/50 transition-all duration-300 group">
+                        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <svg viewBox="0 0 48 48" class="w-full h-full">
+                                <circle cx="24" cy="24" r="4" fill="#00FFFF"/>
+                                <circle cx="12" cy="12" r="3" fill="#FF00FF" opacity="0.7"/>
+                                <circle cx="36" cy="12" r="2" fill="#00FF00" opacity="0.7"/>
+                                <circle cx="12" cy="36" r="2" fill="#8B00FF" opacity="0.7"/>
+                                <circle cx="36" cy="36" r="3" fill="#00FFFF" opacity="0.7"/>
+                                <circle cx="24" cy="8" r="2" fill="#FF00FF" opacity="0.5"/>
+                                <circle cx="8" cy="24" r="2" fill="#00FF00" opacity="0.5"/>
+                                <circle cx="40" cy="24" r="2" fill="#FFD700" opacity="0.5"/>
+                                <circle cx="24" cy="40" r="2" fill="#00FFFF" opacity="0.5"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-pixel text-xs text-neo-purple text-center mb-2">PARTÍCULAS NEON</h3>
+                        <p class="text-gray-400 text-xs text-center mb-4">Efeitos visuais ao caminhar, 6 variações</p>
+                        <div class="text-center mb-4">
+                            <span class="font-pixel text-lg text-neo-purple">R$ 14,90</span>
+                        </div>
+                        <button onclick="addToCart('Partículas Neon', 14.90)" class="w-full py-2.5 bg-neo-purple/10 border border-neo-purple/30 text-neo-purple font-pixel text-[10px] rounded-lg hover:bg-neo-purple/20 transition-all duration-300 add-to-cart-btn">
+                            🛒 ADICIONAR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tag Neon -->
+                <div class="store-card reveal-on-scroll" data-category="cosmetics" data-delay="0">
+                    <div class="relative p-6 bg-neo-card rounded-2xl border border-yellow-500/20 hover:border-yellow-500/50 transition-all duration-300 group">
+                        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <svg viewBox="0 0 48 48" class="w-full h-full">
+                                <rect x="4" y="16" width="40" height="16" rx="2" fill="rgba(255,215,0,0.2)" stroke="#FFD700" stroke-width="2"/>
+                                <text x="24" y="28" text-anchor="middle" fill="#FFD700" font-family="'Press Start 2P'" font-size="8">TAG</text>
+                            </svg>
+                        </div>
+                        <h3 class="font-pixel text-xs text-yellow-400 text-center mb-2">TAG NEON</h3>
+                        <p class="text-gray-400 text-xs text-center mb-4">Tag personalizada com cores neon no chat</p>
+                        <div class="text-center mb-4">
+                            <span class="font-pixel text-lg text-yellow-400">R$ 7,90</span>
+                        </div>
+                        <button onclick="addToCart('Tag Neon', 7.90)" class="w-full py-2.5 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 font-pixel text-[10px] rounded-lg hover:bg-yellow-500/20 transition-all duration-300 add-to-cart-btn">
+                            🛒 ADICIONAR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kit Pro -->
+                <div class="store-card reveal-on-scroll" data-category="kits" data-delay="100">
+                    <div class="relative p-6 bg-neo-card rounded-2xl border border-red-500/20 hover:border-red-500/50 transition-all duration-300 group">
+                        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <svg viewBox="0 0 48 48" class="w-full h-full">
+                                <rect x="8" y="16" width="32" height="24" fill="#B71C1C"/>
+                                <rect x="8" y="12" width="32" height="8" fill="#D32F2F"/>
+                                <rect x="20" y="16" width="8" height="4" fill="#FFD700"/>
+                                <rect x="12" y="20" width="8" height="8" fill="#42A5F5"/>
+                                <rect x="28" y="20" width="8" height="8" fill="#AB47BC"/>
+                                <rect x="20" y="28" width="8" height="8" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-pixel text-xs text-red-400 text-center mb-2">KIT PRO</h3>
+                        <p class="text-gray-400 text-xs text-center mb-4">Armadura diamante, elytra e shulker boxes</p>
+                        <div class="text-center mb-4">
+                            <span class="font-pixel text-lg text-red-400">R$ 29,90</span>
+                        </div>
+                        <button onclick="addToCart('Kit Pro', 29.90)" class="w-full py-2.5 bg-red-500/10 border border-red-500/30 text-red-400 font-pixel text-[10px] rounded-lg hover:bg-red-500/20 transition-all duration-300 add-to-cart-btn">
+                            🛒 ADICIONAR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Crate Key -->
+                <div class="store-card reveal-on-scroll" data-category="keys" data-delay="200">
+                    <div class="relative p-6 bg-neo-card rounded-2xl border border-orange-500/20 hover:border-orange-500/50 transition-all duration-300 group">
+                        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <svg viewBox="0 0 48 48" class="w-full h-full">
+                                <rect x="20" y="4" width="8" height="4" fill="#FFD700"/>
+                                <rect x="16" y="8" width="16" height="4" fill="#FFD700"/>
+                                <rect x="22" y="12" width="4" height="20" fill="#FFD700"/>
+                                <rect x="18" y="32" width="12" height="4" fill="#FFD700"/>
+                                <rect x="26" y="24" width="8" height="4" fill="#FFD700"/>
+                                <rect x="26" y="28" width="4" height="4" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-pixel text-xs text-orange-400 text-center mb-2">CRATE KEY x5</h3>
+                        <p class="text-gray-400 text-xs text-center mb-4">5 chaves para crates lendários</p>
+                        <div class="text-center mb-4">
+                            <span class="font-pixel text-lg text-orange-400">R$ 19,90</span>
+                        </div>
+                        <button onclick="addToCart('Crate Key x5', 19.90)" class="w-full py-2.5 bg-orange-500/10 border border-orange-500/30 text-orange-400 font-pixel text-[10px] rounded-lg hover:bg-orange-500/20 transition-all duration-300 add-to-cart-btn">
+                            🛒 ADICIONAR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NEO+ -->
+                <div class="store-card reveal-on-scroll" data-category="ranks" data-delay="300">
+                    <div class="relative p-6 bg-gradient-to-b from-neo-card to-neo-card-light rounded-2xl border border-gradient-neo hover:shadow-lg hover:shadow-neo-cyan/10 transition-all duration-300 group overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-neo-cyan/5 via-neo-magenta/5 to-neo-lime/5 animate-pulse"></div>
+                        <div class="relative">
+                            <div class="absolute top-0 right-0">
+                                <span class="font-pixel text-[8px] text-neo-black bg-gradient-to-r from-neo-cyan to-neo-magenta px-2 py-1 rounded">PREMIUM</span>
+                            </div>
+                            <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                                <svg viewBox="0 0 48 48" class="w-full h-full">
+                                    <rect x="4" y="4" width="40" height="40" fill="none" stroke="url(#gradient)" stroke-width="2"/>
+                                    <defs><linearGradient id="gradient"><stop offset="0%" stop-color="#00FFFF"/><stop offset="50%" stop-color="#FF00FF"/><stop offset="100%" stop-color="#00FF00"/></linearGradient></defs>
+                                    <text x="24" y="28" text-anchor="middle" fill="url(#gradient)" font-family="'Press Start 2P'" font-size="8">N+</text>
+                                </svg>
+                            </div>
+                            <h3 class="font-pixel text-xs bg-gradient-to-r from-neo-cyan via-neo-magenta to-neo-lime bg-clip-text text-transparent text-center mb-2">RANK NEO+</h3>
+                            <p class="text-gray-400 text-xs text-center mb-4">O rank definitivo. TODOS os benefícios!</p>
+                            <div class="text-center mb-4">
+                                <span class="text-gray-500 text-sm line-through">R$ 149,90</span>
+                                <span class="font-pixel text-lg bg-gradient-to-r from-neo-cyan to-neo-magenta bg-clip-text text-transparent ml-2">R$ 99,90</span>
+                            </div>
+                            <button onclick="addToCart('NEO+', 99.90)" class="w-full py-2.5 bg-gradient-to-r from-neo-cyan/20 to-neo-magenta/20 border border-neo-cyan/30 text-white font-pixel text-[10px] rounded-lg hover:from-neo-cyan/30 hover:to-neo-magenta/30 transition-all duration-300 add-to-cart-btn">
+                                🛒 ADICIONAR
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shopping Cart -->
+            <div id="cart-container" class="fixed bottom-6 right-6 z-40 hidden">
+                <button id="cart-toggle" class="relative w-14 h-14 bg-neo-cyan rounded-full flex items-center justify-center shadow-lg shadow-neo-cyan/30 hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6 text-neo-black" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <span id="cart-count" class="absolute -top-1 -right-1 w-5 h-5 bg-neo-magenta text-white text-xs rounded-full flex items-center justify-center font-pixel">0</span>
+                </button>
+
+                <!-- Cart Dropdown -->
+                <div id="cart-dropdown" class="hidden absolute bottom-16 right-0 w-80 bg-neo-card border border-neo-cyan/20 rounded-2xl shadow-2xl shadow-neo-cyan/10 overflow-hidden">
+                    <div class="p-4 border-b border-neo-cyan/10">
+                        <h3 class="font-pixel text-xs text-neo-cyan">🛒 CARRINHO</h3>
+                    </div>
+                    <div id="cart-items" class="max-h-60 overflow-y-auto p-4 space-y-3">
+                        <p class="text-gray-500 text-sm text-center">Carrinho vazio</p>
+                    </div>
+                    <div class="p-4 border-t border-neo-cyan/10 bg-neo-darker/50">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-sm text-gray-400">Total:</span>
+                            <span id="cart-total" class="font-pixel text-sm text-neo-cyan">R$ 0,00</span>
+                        </div>
+                        <button onclick="checkout()" class="w-full py-2.5 bg-neo-cyan text-neo-black font-pixel text-[10px] rounded-lg hover:bg-neo-cyan/80 transition-colors">
+                            FINALIZAR COMPRA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== VOTE SECTION ==================== -->
+    <section id="vote" class="relative py-20 lg:py-32 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 reveal-on-scroll">
+                <span class="font-pixel text-yellow-400 text-xs tracking-[0.3em] uppercase">Votação</span>
+                <h2 class="font-pixel text-2xl sm:text-3xl lg:text-4xl mt-4">VOTE & GANHE</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-yellow-400 to-neo-cyan mx-auto mt-4"></div>
+                <p class="mt-4 text-gray-400 max-w-2xl mx-auto">Vote 5x por dia e ganhe crates grátis + recompensas exclusivas!</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Vote Sites -->
+                <div class="space-y-4 reveal-on-scroll">
+                    <h3 class="font-pixel text-sm text-neo-cyan mb-6">SITES DE VOTO</h3>
+
+                    <a href="https://minecraft-mp.com/server/neo" target="_blank" rel="noopener" class="vote-site-card group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-neo-cyan/10 rounded-lg flex items-center justify-center font-pixel text-neo-cyan text-sm">1</div>
+                            <div>
+                                <span class="text-white group-hover:text-neo-cyan transition-colors font-medium">Minecraft-MP</span>
+                                <p class="text-xs text-gray-500">minecraft-mp.com</p>
+                            </div>
+                        </div>
+                        <span class="px-4 py-2 bg-neo-cyan/10 border border-neo-cyan/30 text-neo-cyan font-pixel text-[10px] rounded-lg group-hover:bg-neo-cyan/20 transition-all">VOTAR →</span>
+                    </a>
+
+                    <a href="https://topservers.com.br/server/neo" target="_blank" rel="noopener" class="vote-site-card group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-neo-magenta/10 rounded-lg flex items-center justify-center font-pixel text-neo-magenta text-sm">2</div>
+                            <div>
+                                <span class="text-white group-hover:text-neo-magenta transition-colors font-medium">TopServers BR</span>
+                                <p class="text-xs text-gray-500">topservers.com.br</p>
+                            </div>
+                        </div>
+                        <span class="px-4 py-2 bg-neo-magenta/10 border border-neo-magenta/30 text-neo-magenta font-pixel text-[10px] rounded-lg group-hover:bg-neo-magenta/20 transition-all">VOTAR →</span>
+                    </a>
+
+                    <a href="https://minecraftservers.org/server/neo" target="_blank" rel="noopener" class="vote-site-card group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-neo-lime/10 rounded-lg flex items-center justify-center font-pixel text-neo-lime text-sm">3</div>
+                            <div>
+                                <span class="text-white group-hover:text-neo-lime transition-colors font-medium">MC Servers</span>
+                                <p class="text-xs text-gray-500">minecraftservers.org</p>
+                            </div>
+                        </div>
+                        <span class="px-4 py-2 bg-neo-lime/10 border border-neo-lime/30 text-neo-lime font-pixel text-[10px] rounded-lg group-hover:bg-neo-lime/20 transition-all">VOTAR →</span>
+                    </a>
+
+                    <a href="https://serverpact.com/server/neo" target="_blank" rel="noopener" class="vote-site-card group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-neo-purple/10 rounded-lg flex items-center justify-center font-pixel text-neo-purple text-sm">4</div>
+                            <div>
+                                <span class="text-white group-hover:text-neo-purple transition-colors font-medium">ServerPact</span>
+                                <p class="text-xs text-gray-500">serverpact.com</p>
+                            </div>
+                        </div>
+                        <span class="px-4 py-2 bg-neo-purple/10 border border-neo-purple/30 text-neo-purple font-pixel text-[10px] rounded-lg group-hover:bg-neo-purple/20 transition-all">VOTAR →</span>
+                    </a>
+
+                    <a href="https://best-minecraft-servers.co/server/neo" target="_blank" rel="noopener" class="vote-site-card group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-yellow-500/10 rounded-lg flex items-center justify-center font-pixel text-yellow-400 text-sm">5</div>
+                            <div>
+                                <span class="text-white group-hover:text-yellow-400 transition-colors font-medium">Best MC Servers</span>
+                                <p class="text-xs text-gray-500">best-minecraft-servers.co</p>
+                            </div>
+                        </div>
+                        <span class="px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 font-pixel text-[10px] rounded-lg group-hover:bg-yellow-500/20 transition-all">VOTAR →</span>
+                    </a>
+
+                    <!-- Vote Progress -->
+                    <div class="mt-8 p-4 bg-neo-card rounded-xl border border-neo-cyan/10">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-pixel text-[10px] text-gray-400">Progresso Diário</span>
+                            <span class="font-pixel text-[10px] text-neo-cyan">3/5 votos</span>
+                        </div>
+                        <div class="w-full h-3 bg-neo-darker rounded-full overflow-hidden">
+                            <div class="vote-progress-bar h-full bg-gradient-to-r from-neo-cyan to-neo-magenta rounded-full" style="width: 60%"></div>
+                        </div>
+                        <p class="mt-2 text-xs text-gray-500">Mais 2 votos para ganhar uma 🎁 Crate Lendária!</p>
+                    </div>
+                </div>
+
+                <!-- Leaderboard -->
+                <div class="reveal-on-scroll">
+                    <h3 class="font-pixel text-sm text-neo-magenta mb-6">🏆 TOP 10 VOTANTES</h3>
+                    <div class="bg-neo-card rounded-2xl border border-neo-magenta/20 overflow-hidden">
+                        <div class="divide-y divide-neo-magenta/10">
+                            <div class="leaderboard-row" data-rank="1">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-1">1</span>
+                                    <img src="https://mc-heads.net/avatar/Notch/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">xNeonPlayer</span>
+                                </div>
+                                <span class="font-pixel text-xs text-yellow-400">2,847 votos</span>
+                            </div>
+                            <div class="leaderboard-row" data-rank="2">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-2">2</span>
+                                    <img src="https://mc-heads.net/avatar/jeb_/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">CyberMiner42</span>
+                                </div>
+                                <span class="font-pixel text-xs text-gray-300">2,391 votos</span>
+                            </div>
+                            <div class="leaderboard-row" data-rank="3">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-3">3</span>
+                                    <img src="https://mc-heads.net/avatar/Dinnerbone/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">PixelKing_BR</span>
+                                </div>
+                                <span class="font-pixel text-xs text-orange-400">2,156 votos</span>
+                            </div>
+                            <div class="leaderboard-row" data-rank="4">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-normal">4</span>
+                                    <img src="https://mc-heads.net/avatar/Herobrine/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">NeoWarrior</span>
+                                </div>
+                                <span class="font-pixel text-xs text-gray-400">1,923 votos</span>
+                            </div>
+                            <div class="leaderboard-row" data-rank="5">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-normal">5</span>
+                                    <img src="https://mc-heads.net/avatar/Steve/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">BladeRunner_MC</span>
+                                </div>
+                                <span class="font-pixel text-xs text-gray-400">1,847 votos</span>
+                            </div>
+                            <div class="leaderboard-row" data-rank="6">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-normal">6</span>
+                                    <img src="https://mc-heads.net/avatar/Alex/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">GlowDust</span>
+                                </div>
+                                <span class="font-pixel text-xs text-gray-400">1,654 votos</span>
+                            </div>
+                            <div class="leaderboard-row" data-rank="7">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-normal">7</span>
+                                    <img src="https://mc-heads.net/avatar/Dream/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">MatrixCrafter</span>
+                                </div>
+                                <span class="font-pixel text-xs text-gray-400">1,521 votos</span>
+                            </div>
+                            <div class="leaderboard-row" data-rank="8">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-normal">8</span>
+                                    <img src="https://mc-heads.net/avatar/Technoblade/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">xPvPzin</span>
+                                </div>
+                                <span class="font-pixel text-xs text-gray-400">1,398 votos</span>
+                            </div>
+                            <div class="leaderboard-row" data-rank="9">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-normal">9</span>
+                                    <img src="https://mc-heads.net/avatar/Philza/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">NeonGhost</span>
+                                </div>
+                                <span class="font-pixel text-xs text-gray-400">1,287 votos</span>
+                            </div>
+                            <div class="leaderboard-row" data-rank="10">
+                                <div class="flex items-center gap-3">
+                                    <span class="rank-badge rank-normal">10</span>
+                                    <img src="https://mc-heads.net/avatar/Sapnap/32" alt="Player" class="w-8 h-8 rounded-lg pixel-render" loading="lazy">
+                                    <span class="font-medium text-sm">CyberPunk_BR</span>
+                                </div>
+                                <span class="font-pixel text-xs text-gray-400">1,156 votos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== GALLERY SECTION ==================== -->
+    <section id="gallery" class="relative py-20 lg:py-32 z-10 bg-neo-black/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-on-scroll">
+                <span class="font-pixel text-neo-cyan text-xs tracking-[0.3em] uppercase">Galeria</span>
+                <h2 class="font-pixel text-2xl sm:text-3xl lg:text-4xl mt-4">SCREENSHOTS</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-neo-cyan to-neo-magenta mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 reveal-on-scroll">
+                <div class="gallery-item aspect-video bg-neo-card rounded-xl border border-neo-cyan/10 overflow-hidden cursor-pointer group" onclick="openLightbox(0)">
+                    <div class="w-full h-full bg-gradient-to-br from-neo-cyan/20 via-neo-card to-neo-magenta/20 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neo-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="font-pixel text-[10px] text-white">Spawn Principal - Neo City</span>
+                        </div>
+                        <span class="font-pixel text-xs text-gray-500 group-hover:opacity-0 transition-opacity">📸 Spawn Neon</span>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-video bg-neo-card rounded-xl border border-neo-magenta/10 overflow-hidden cursor-pointer group" onclick="openLightbox(1)">
+                    <div class="w-full h-full bg-gradient-to-br from-neo-magenta/20 via-neo-card to-neo-lime/20 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neo-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="font-pixel text-[10px] text-white">Arena PvP - NeoWars</span>
+                        </div>
+                        <span class="font-pixel text-xs text-gray-500 group-hover:opacity-0 transition-opacity">⚔️ Arena PvP</span>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-video bg-neo-card rounded-xl border border-neo-lime/10 overflow-hidden cursor-pointer group" onclick="openLightbox(2)">
+                    <div class="w-full h-full bg-gradient-to-br from-neo-lime/20 via-neo-card to-neo-purple/20 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neo-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="font-pixel text-[10px] text-white">Skyblock Island</span>
+                        </div>
+                        <span class="font-pixel text-xs text-gray-500 group-hover:opacity-0 transition-opacity">🏝️ Skyblock</span>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-video bg-neo-card rounded-xl border border-neo-purple/10 overflow-hidden cursor-pointer group" onclick="openLightbox(3)">
+                    <div class="w-full h-full bg-gradient-to-br from-neo-purple/20 via-neo-card to-neo-cyan/20 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neo-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="font-pixel text-[10px] text-white">Evento Neon Night</span>
+                        </div>
+                        <span class="font-pixel text-xs text-gray-500 group-hover:opacity-0 transition-opacity">🎉 Evento</span>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-video bg-neo-card rounded-xl border border-yellow-500/10 overflow-hidden cursor-pointer group" onclick="openLightbox(4)">
+                    <div class="w-full h-full bg-gradient-to-br from-yellow-500/20 via-neo-card to-neo-cyan/20 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neo-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="font-pixel text-[10px] text-white">Mercado dos Players</span>
+                        </div>
+                        <span class="font-pixel text-xs text-gray-500 group-hover:opacity-0 transition-opacity">🏪 Mercado</span>
+                    </div>
+                </div>
+                <div class="gallery-item aspect-video bg-neo-card rounded-xl border border-red-500/10 overflow-hidden cursor-pointer group" onclick="openLightbox(5)">
+                    <div class="w-full h-full bg-gradient-to-br from-red-500/20 via-neo-card to-neo-magenta/20 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neo-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="font-pixel text-[10px] text-white">Nether Custom</span>
+                        </div>
+                        <span class="font-pixel text-xs text-gray-500 group-hover:opacity-0 transition-opacity">🔥 Nether</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-[100] hidden bg-neo-black/95 backdrop-blur-xl flex items-center justify-center p-4">
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <button onclick="prevImage()" class="absolute left-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button onclick="nextImage()" class="absolute right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div id="lightbox-content" class="max-w-4xl w-full aspect-video bg-neo-card rounded-2xl border border-neo-cyan/20 flex items-center justify-center">
+            <span id="lightbox-text" class="font-pixel text-sm text-neo-cyan"></span>
+        </div>
+    </div>
+
+    <!-- ==================== TEAM SECTION ==================== -->
+    <section id="team" class="relative py-20 lg:py-32 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-on-scroll">
+                <span class="font-pixel text-neo-lime text-xs tracking-[0.3em] uppercase">Equipe</span>
+                <h2 class="font-pixel text-2xl sm:text-3xl lg:text-4xl mt-4">NOSSA EQUIPE</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-neo-lime to-neo-cyan mx-auto mt-4"></div>
+            </div>
+
+            <!-- Team Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 mb-20 reveal-on-scroll">
+                <!-- Owner -->
+                <div class="team-card group">
+                    <div class="relative">
+                        <div class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden border-2 border-neo-cyan/30 group-hover:border-neo-cyan transition-colors">
+                            <img src="https://mc-heads.net/avatar/Notch/80" alt="NeoAdmin" class="w-full h-full pixel-render" loading="lazy">
+                        </div>
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
+                            <span class="font-pixel text-[7px] text-neo-black bg-neo-cyan px-2 py-0.5 rounded whitespace-nowrap">OWNER</span>
+                        </div>
+                    </div>
+                    <h4 class="font-pixel text-[10px] text-white mt-3">NeoAdmin</h4>
+                    <a href="https://discord.gg/neo" class="text-xs text-gray-500 hover:text-neo-cyan transition-colors mt-1 block">Discord ↗</a>
+                </div>
+
+                <!-- Admin -->
+                <div class="team-card group">
+                    <div class="relative">
+                        <div class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden border-2 border-neo-magenta/30 group-hover:border-neo-magenta transition-colors">
+                            <img src="https://mc-heads.net/avatar/jeb_/80" alt="CyberOp" class="w-full h-full pixel-render" loading="lazy">
+                        </div>
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
+                            <span class="font-pixel text-[7px] text-neo-black bg-neo-magenta px-2 py-0.5 rounded whitespace-nowrap">ADMIN</span>
+                        </div>
+                    </div>
+                    <h4 class="font-pixel text-[10px] text-white mt-3">CyberOp</h4>
+                    <a href="https://discord.gg/neo" class="text-xs text-gray-500 hover:text-neo-magenta transition-colors mt-1 block">Discord ↗</a>
+                </div>
+
+                <!-- Mod -->
+                <div class="team-card group">
+                    <div class="relative">
+                        <div class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden border-2 border-neo-lime/30 group-hover:border-neo-lime transition-colors">
+                            <img src="https://mc-heads.net/avatar/Dinnerbone/80" alt="PixelMod" class="w-full h-full pixel-render" loading="lazy">
+                        </div>
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
+                            <span class="font-pixel text-[7px] text-neo-black bg-neo-lime px-2 py-0.5 rounded whitespace-nowrap">MOD</span>
+                        </div>
+                    </div>
+                    <h4 class="font-pixel text-[10px] text-white mt-3">PixelMod</h4>
+                    <a href="https://discord.gg/neo" class="text-xs text-gray-500 hover:text-neo-lime transition-colors mt-1 block">Discord ↗</a>
+                </div>
+
+                <!-- Helper -->
+                <div class="team-card group">
+                    <div class="relative">
+                        <div class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden border-2 border-neo-purple/30 group-hover:border-neo-purple transition-colors">
+                            <img src="https://mc-heads.net/avatar/Steve/80" alt="GlowHelper" class="w-full h-full pixel-render" loading="lazy">
+                        </div>
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
+                            <span class="font-pixel text-[7px] text-white bg-neo-purple px-2 py-0.5 rounded whitespace-nowrap">HELPER</span>
+                        </div>
+                    </div>
+                    <h4 class="font-pixel text-[10px] text-white mt-3">GlowHelper</h4>
+                    <a href="https://discord.gg/neo" class="text-xs text-gray-500 hover:text-neo-purple transition-colors mt-1 block">Discord ↗</a>
+                </div>
+
+                <!-- Builder -->
+                <div class="team-card group">
+                    <div class="relative">
+                        <div class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden border-2 border-yellow-500/30 group-hover:border-yellow-400 transition-colors">
+                            <img src="https://mc-heads.net/avatar/Alex/80" alt="NeoBuilder" class="w-full h-full pixel-render" loading="lazy">
+                        </div>
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
+                            <span class="font-pixel text-[7px] text-neo-black bg-yellow-400 px-2 py-0.5 rounded whitespace-nowrap">BUILDER</span>
+                        </div>
+                    </div>
+                    <h4 class="font-pixel text-[10px] text-white mt-3">NeoBuilder</h4>
+                    <a href="https://discord.gg/neo" class="text-xs text-gray-500 hover:text-yellow-400 transition-colors mt-1 block">Discord ↗</a>
+                </div>
+            </div>
+
+            <!-- Rules Section -->
+            <div class="max-w-3xl mx-auto reveal-on-scroll">
+                <div class="text-center mb-8">
+                    <span class="font-pixel text-red-400 text-xs tracking-[0.3em] uppercase">Regras</span>
+                    <h2 class="font-pixel text-xl sm:text-2xl mt-4">REGRAS DO SERVIDOR</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-red-500 to-neo-magenta mx-auto mt-4"></div>
+                </div>
+
+                <div class="space-y-3" id="rules-accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="text-red-400">§1</span>
+                                <span>Sem Griefing</span>
+                            </span>
+                            <svg class="accordion-icon w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <p>É proibido destruir, modificar ou roubar construções de outros jogadores sem permissão. Punição: Ban temporário (1-7 dias) na primeira vez, ban permanente em reincidência.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="text-red-400">§2</span>
+                                <span>Sem Hacks/Cheats</span>
+                            </span>
+                            <svg class="accordion-icon w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <p>O uso de qualquer tipo de hack, mod ilegal, auto-clicker ou cliente modificado (exceto OptiFine/Fabric com mods estéticos) resultará em ban permanente imediato. Nosso anti-cheat detecta automaticamente.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="text-red-400">§3</span>
+                                <span>Respeito Acima de Tudo</span>
+                            </span>
+                            <svg class="accordion-icon w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Discriminação, assédio, bullying, conteúdo impróprio e qualquer forma de desrespeito são proibidos. Isso inclui chat, builds, skins e nomes. Punição: Mute → Ban temporário → Ban permanente.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="text-red-400">§4</span>
+                                <span>Sem Exploits de Duplicação</span>
+                            </span>
+                            <svg class="accordion-icon w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Explorar bugs para duplicar itens, dinheiro ou qualquer recurso é proibido. Reporte bugs para ganhar recompensas! Punição: Reset de inventário + Ban temporário.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="flex items-center gap-3">
+                                <span class="text-red-400">§5</span>
+                                <span>Publicidade Proibida</span>
+                            </span>
+                            <svg class="accordion-icon w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Divulgar outros servidores, links externos (exceto autorizados) ou fazer spam no chat é proibido. Punição: Mute permanente → Ban permanente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SUPPORT SECTION ==================== -->
+    <section id="support" class="relative py-20 lg:py-32 z-10 bg-neo-black/50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-on-scroll">
+                <span class="font-pixel text-neo-cyan text-xs tracking-[0.3em] uppercase">Suporte</span>
+                <h2 class="font-pixel text-2xl sm:text-3xl lg:text-4xl mt-4">FALE CONOSCO</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-neo-cyan to-neo-magenta mx-auto mt-4"></div>
+                <p class="mt-4 text-gray-400">Reporte bugs, envie sugestões ou tire dúvidas</p>
+            </div>
+
+            <div class="grid lg:grid-cols-5 gap-8 reveal-on-scroll">
+                <!-- Contact Info -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="p-4 bg-neo-card rounded-xl border border-neo-cyan/10">
+                        <h4 class="font-pixel text-[10px] text-neo-cyan mb-2">💬 DISCORD</h4>
+                        <p class="text-sm text-gray-400">Suporte mais rápido via Discord</p>
+                        <a href="https://discord.gg/neo" target="_blank" class="inline-block mt-2 text-neo-cyan text-sm hover:underline">discord.gg/neo →</a>
+                    </div>
+                    <div class="p-4 bg-neo-card rounded-xl border border-neo-magenta/10">
+                        <h4 class="font-pixel text-[10px] text-neo-magenta mb-2">📧 EMAIL</h4>
+                        <p class="text-sm text-gray-400">Para assuntos comerciais</p>
+                        <a href="mailto:contato@neo.gg" class="inline-block mt-2 text-neo-magenta text-sm hover:underline">contato@neo.gg</a>
+                    </div>
+                    <div class="p-4 bg-neo-card rounded-xl border border-neo-lime/10">
+                        <h4 class="font-pixel text-[10px] text-neo-lime mb-2">⏰ HORÁRIO</h4>
+                        <p class="text-sm text-gray-400">Seg-Sex: 9h-22h</p>
+                        <p class="text-sm text-gray-400">Sáb-Dom: 10h-20h</p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="lg:col-span-3">
+                    <form id="support-form" class="space-y-4">
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-pixel text-[10px] text-gray-400 mb-2">NICK NO SERVIDOR</label>
+                                <input type="text" name="nick" required placeholder="Seu nick" class="neo-input">
+                            </div>
+                            <div>
+                                <label class="block font-pixel text-[10px] text-gray-400 mb-2">EMAIL</label>
+                                <input type="email" name="email" required placeholder="seu@email.com" class="neo-input">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-pixel text-[10px] text-gray-400 mb-2">TIPO</label>
+                            <select name="type" class="neo-input">
+                                <option value="bug">🐛 Reportar Bug</option>
+                                <option value="suggestion">💡 Sugestão</option>
+                                <option value="help">❓ Dúvida</option>
+                                <option value="appeal">📝 Apelação de Ban</option>
+                                <option value="purchase">🛒 Problema com Compra</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-pixel text-[10px] text-gray-400 mb-2">MENSAGEM</label>
+                            <textarea name="message" rows="5" required placeholder="Descreva em detalhes..." class="neo-input resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-neo-cyan text-neo-black font-pixel text-xs rounded-xl hover:bg-neo-cyan/80 transition-all duration-300 flex items-center justify-center gap-2">
+                            <span id="form-btn-text">ENVIAR MENSAGEM</span>
+                            <div id="form-spinner" class="hidden w-4 h-4 border-2 border-neo-black border-t-transparent rounded-full animate-spin"></div>
+                        </button>
+                    </form>
+                    <div id="form-success" class="hidden mt-4 p-4 bg-neo-lime/10 border border-neo-lime/30 rounded-xl text-center">
+                        <span class="font-pixel text-xs text-neo-lime">✅ Mensagem enviada com sucesso! Responderemos em até 24h.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== DISCORD WIDGET ==================== -->
+    <section class="relative py-16 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-[#5865F2]/20 via-neo-card to-[#5865F2]/20 rounded-2xl border border-[#5865F2]/30 p-8 lg:p-12 text-center reveal-on-scroll">
+                <div class="max-w-2xl mx-auto">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-[#5865F2]" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/>
+                    </svg>
+                    <h3 class="font-pixel text-lg text-[#5865F2] mb-2">ENTRE NO DISCORD</h3>
+                    <p class="text-gray-400 mb-6">Junte-se a mais de 15.000 membros na nossa comunidade!</p>
+                    <a href="https://discord.gg/neo" target="_blank" class="inline-flex items-center gap-2 px-8 py-3 bg-[#5865F2] text-white font-pixel text-xs rounded-xl hover:bg-[#4752C4] transition-colors">
+                        ENTRAR NO DISCORD →
+                    </a>
+                    <!-- Simulated Chat -->
+                    <div class="mt-8 max-w-md mx-auto text-left bg-neo-black/30 rounded-xl p-4 space-y-3">
+                        <div class="flex items-start gap-2 text-sm">
+                            <span class="text-neo-cyan font-pixel text-[10px]">NeoBot</span>
+                            <span class="text-gray-400">: Bem-vindo ao Neo Discord! 🎮</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm">
+                            <span class="text-neo-magenta font-pixel text-[10px]">Player42</span>
+                            <span class="text-gray-400">: Alguém quer jogar Bedwars?</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm">
+                            <span class="text-neo-lime font-pixel text-[10px]">xMiner</span>
+                            <span class="text-gray-400">: Evento de Nether começa em 1h! 🔥</span>
+                        </div>
+                        <div class="flex items-center gap-2 pt-2 border-t border-white/5">
+                            <input type="text" placeholder="Envie uma mensagem..." class="flex-1 bg-neo-card rounded-lg px-3 py-2 text-sm text-gray-500 border border-white/5 cursor-not-allowed" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="relative z-10 border-t border-neo-cyan/10 bg-neo-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Brand -->
+                <div class="col-span-2 lg:col-span-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <svg width="32" height="32" viewBox="0 0 40 40">
+                            <rect x="2" y="2" width="36" height="36" fill="none" stroke="#00FFFF" stroke-width="2"/>
+                            <rect x="6" y="6" width="8" height="28" fill="#00FFFF"/>
+                            <rect x="14" y="6" width="4" height="4" fill="#00FFFF"/>
+                            <rect x="18" y="10" width="4" height="4" fill="#00FFFF"/>
+                            <rect x="22" y="14" width="4" height="4" fill="#00FFFF"/>
+                            <rect x="26" y="6" width="8" height="28" fill="#00FFFF"/>
+                        </svg>
+                        <span class="font-pixel text-neo-cyan tracking-widest">NEO</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-4">O servidor de Minecraft mais inovador do Brasil. Construindo o futuro, um bloco por vez.</p>
+                    <!-- Server Status -->
+                    <div class="flex items-center gap-2 p-2 bg-neo-card rounded-lg border border-neo-cyan/10">
+                        <div id="server-status-dot" class="w-2 h-2 bg-neo-lime rounded-full animate-pulse"></div>
+                        <span id="server-status-text" class="font-pixel text-[8px] text-neo-lime">ONLINE</span>
+                        <span id="server-ping" class="font-pixel text-[8px] text-gray-500 ml-auto">--ms</span>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="font-pixel text-[10px] text-neo-cyan mb-4 tracking-wider">NAVEGAÇÃO</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#hero" class="text-sm text-gray-400 hover:text-neo-cyan transition-colors">Início</a></li>
+                        <li><a href="#about" class="text-sm text-gray-400 hover:text-neo-cyan transition-colors">Sobre</a></li>
+                        <li><a href="#gamemodes" class="text-sm text-gray-400 hover:text-neo-cyan transition-colors">Gamemodes</a></li>
+                        <li><a href="#store" class="text-sm text-gray-400 hover:text-neo-cyan transition-colors">Loja</a></li>
+                        <li><a href="#vote" class="text-sm text-gray-400 hover:text-neo-cyan transition-colors">Votar</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-pixel text-[10px] text-neo-magenta mb-4 tracking-wider">RECURSOS</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#team" class="text-sm text-gray-400 hover:text-neo-magenta transition-colors">Equipe</a></li>
+                        <li><a href="#support" class="text-sm text-gray-400 hover:text-neo-magenta transition-colors">Suporte</a></li>
+                        <li><a href="#gallery" class="text-sm text-gray-400 hover:text-neo-magenta transition-colors">Galeria</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-neo-magenta transition-colors">Wiki</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-neo-magenta transition-colors">Mapa Online</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-pixel text-[10px] text-neo-lime mb-4 tracking-wider">LEGAL</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-neo-lime transition-colors">Termos de Uso</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-neo-lime transition-colors">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-neo-lime transition-colors">Política de Reembolso</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-neo-lime transition-colors">EULA Minecraft</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-neo-cyan/10">
+                <div class="flex items-center gap-4">
+                    <a href="https://discord.gg/neo" target="_blank" class="social-link social-discord" title="Discord">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/></svg>
+                    </a>
+                    <a href="https://youtube.com/@neo" target="_blank" class="social-link social-youtube" title="YouTube">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="https://instagram.com/neo.gg" target="_blank" class="social-link social-instagram" title="Instagram">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                    <a href="https://tiktok.com/@neo.gg" target="_blank" class="social-link social-tiktok" title="TikTok">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                    </a>
+                </div>
+
+                <div class="text-center sm:text-right">
+                    <p class="font-pixel text-[8px] text-gray-500 tracking-wider">© 2026 NEOPROTON AG</p>
+                    <p class="text-xs text-gray-600 mt-1">Cabral, Paraná, BR</p>
+                    <p class="text-[10px] text-gray-700 mt-1">Não afiliado à Mojang Studios</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" class="fixed bottom-6 left-6 z-40 w-12 h-12 bg-neo-card border border-neo-cyan/20 rounded-full flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:border-neo-cyan/50 hover:bg-neo-card-light">
+        <svg class="w-5 h-5 text-neo-cyan" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg>
+    </button>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-20 right-4 z-[200] transform translate-x-full transition-transform duration-300">
+        <div class="bg-neo-card border border-neo-cyan/30 rounded-xl px-6 py-4 shadow-2xl shadow-neo-cyan/10 flex items-center gap-3 max-w-sm">
+            <span id="toast-icon" class="text-xl">✅</span>
+            <span id="toast-text" class="text-sm text-gray-300"></span>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
