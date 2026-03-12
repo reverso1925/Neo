@@ -48,5 +48,3 @@ Neo é o servidor de Minecraft mais inovador do Brasil. Survival, Skyblock, Mini
 | ⚡ **Scroll Reveal** | IntersectionObserver para animações performáticas |
 | 🗜️ **Cache Headers** | Configuração otimizada para Vercel/Netlify |
 | ♿ **Acessibilidade** | ARIA labels, contraste adequado, foco visível |
-
-## 🗂️ Estrutura do Projeto
