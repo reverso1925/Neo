@@ -1,1 +1,14 @@
-
+{
+    "name": "neo-minecraft-server",
+    "version": "1.0.0",
+    "description": "Neo - O servidor de Minecraft mais inovador do Brasil",
+    "private": true,
+    "scripts": {
+        "dev": "npx serve .",
+        "build": "echo 'Static site - no build needed'",
+        "start": "npx serve ."
+    },
+    "keywords": ["minecraft", "server", "neo", "gaming"],
+    "author": "NeoProton AG",
+    "license": "MIT"
+}
